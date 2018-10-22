@@ -462,6 +462,13 @@ class GrpcService {
   }
 
   /*
+   * See [[Service.subscribePeerDisconnections]]
+   */
+  public subscribePeerDisconnections: {
+    this.service.subscribePeerDisconnections
+  }
+  
+  /*
    * See [[Service.subscribeAddedOrders]]
    */
   public subscribeAddedOrders: grpc.handleServerStreamingCall<xudrpc.SubscribeAddedOrdersRequest, xudrpc.Order> = (call) => {

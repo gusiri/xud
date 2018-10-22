@@ -1,5 +1,6 @@
 import Logger from '../Logger';
 import Pool from '../p2p/Pool';
+import Peer from '../p2p/Peer';
 import OrderBook from '../orderbook/OrderBook';
 import LndClient, { LndInfo } from '../lndclient/LndClient';
 import RaidenClient, { RaidenInfo } from '../raidenclient/RaidenClient';
@@ -328,6 +329,19 @@ class Service extends EventEmitter {
     const { pairId } = args;
 
     return this.orderBook.removePair(pairId);
+  }
+
+  /*
+   * Subscribes to orders that must be closed when peer is disconected.
+   */
+  public subscribePeerDisconnections(callback: (order: Peer) => void) {
+    this.pool.on('peer.close', peer => {
+      let orders: any[];
+      const engines = this.orderBook.matchingEngines.forEach( (matchingEngines) => {
+        orders.push(matchingEngines);
+      });
+      callback(peer) 
+    });
   }
 
   /*
